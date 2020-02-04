@@ -9,15 +9,14 @@ import Container from '@material-ui/core/Container';
 
 class Login extends React.Component {
   state = {
-    username: '',
     password: ''
   };
 
   handleSubmit() {
     const { setToken } = this.props;
-    const { username, password } = this.state;
+    const { password } = this.state;
 
-    setToken(username + password);
+    setToken(password);
   }
 
   renderTitle() {
@@ -33,26 +32,6 @@ class Login extends React.Component {
   renderForm() {
     return (
       <React.Fragment>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="username"
-          label="Username"
-          name="username"
-          autoComplete="username"
-          autoFocus
-          onChange={event => {
-            this.setState({ username: event.target.value });
-          }}
-          onKeyPress={event => {
-            if (event.key === 'Enter') {
-              this.handleSubmit();
-              event.preventDefault();
-            }
-          }}
-        />
         <TextField
           variant="outlined"
           margin="normal"
