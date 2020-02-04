@@ -6,13 +6,13 @@ import Modal from '@material-ui/core/Modal';
 
 import { ROUTE_LOGIN } from '../../utils/constans';
 
-import {check} from '../../api/checkin';
+import {check, checkin} from '../../api/checkin';
 
 const defaultAttendee = {
-  attendeeName: '-',
-  attendeeEmail: '-',
-  event: '-',
-  pax: 0,
+  attendeeName: 'Ilham',
+  attendeeEmail: 'a@a.a',
+  event: 'Talks',
+  pax: 100,
   paxCheckedIn: 0,
 }
 
@@ -43,14 +43,28 @@ class Main extends React.Component {
     });
   };
 
+  handleSend = () => {
+    const {result} = this.state;
+    const {getToken} = this.props;
+
+    const pass = {password: getToken()};
+    checkin(result, pass).then((res) =>{
+      this.handleClose();
+      console.log({res});
+    }).catch(err => {
+      alert((err.response && err.response.data && err.response.data.detail) || 'Error');
+      console.log({err})
+    })
+  }
+
   handleCheck = () => {
     const {result} = this.state;
     if (result === 'No result' || result === 'Try Again.') return;
-    check(this.state.result).then((res) =>{
+    check(result).then((res) =>{
       this.handleOpen();
       console.log({res});
     }).catch(err => {
-      alert(err.response.data.detail)
+      alert((err.response && err.response.data && err.response.data.detail) || 'Error');
       console.log({err})
     })
   }
@@ -92,7 +106,7 @@ class Main extends React.Component {
             />
             <p style={{ color: 'black' }}>{this.state.result}</p>
             <button className="button" onClick={() => this.handleResetResult()} >Reset</button>
-            <button className="button" onClick={() => this.handleCheck()} >Send</button>
+            <button className="button" onClick={() => this.handleCheck()} >Check</button>
             <Modal
               aria-labelledby="simple-modal-title"
               aria-describedby="simple-modal-description"
@@ -102,11 +116,15 @@ class Main extends React.Component {
               <div className='modal'>
                 <h2 id="simple-modal-title">{`${attendee.attendeeName} - ${attendee.attendeeEmail}`}</h2>
                 <p id="simple-modal-description">
-                  {`${attendee.event} - Pax : ${attendee.pax}`}
+                  {attendee.event}
+                </p>
+                <p id="simple-modal-description">
+                  {`Pax : ${attendee.pax}`}
                 </p>
                 <p id="simple-modal-description">
                   {`Pax Check In : ${attendee.paxCheckedIn}`}
                 </p>
+                <button className="button" onClick={() => this.handleSend()} >Send</button>
               </div>
             </Modal>
           </div>
