@@ -34,6 +34,7 @@ class Main extends React.Component {
       this.setState({
         result: data
       });
+      this.handleCheck();
     }
   };
 
@@ -48,9 +49,9 @@ class Main extends React.Component {
     const {getToken} = this.props;
 
     const pass = {password: getToken()};
-    checkin(result, pass).then((res) =>{
+    checkin(result, pass).then((resPOST) =>{
       this.handleClose();
-      console.log({res});
+      console.log({resPOST});
     }).catch(err => {
       alert((err.response && err.response.data && err.response.data.detail) || 'Error');
       console.log({err})
@@ -62,7 +63,7 @@ class Main extends React.Component {
     if (result === 'No result' || result === 'Try Again.') return;
     check(result).then((res) =>{
       this.handleOpen();
-      console.log({res});
+      this.setState({attendee: res.data})
     }).catch(err => {
       alert((err.response && err.response.data && err.response.data.detail) || 'Error');
       console.log({err})
@@ -104,9 +105,6 @@ class Main extends React.Component {
               onScan={this.handleScan}
               style={{ width: '100%', maxWidth: '500px' }}
             />
-            <p style={{ color: 'black' }}>{this.state.result}</p>
-            <button className="button" onClick={() => this.handleResetResult()} >Reset</button>
-            <button className="button" onClick={() => this.handleCheck()} >Check</button>
             <Modal
               aria-labelledby="simple-modal-title"
               aria-describedby="simple-modal-description"
