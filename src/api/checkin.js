@@ -7,10 +7,10 @@ export function check(token) {
   });
 }
 
-export function checkin(token, password) {
+export function checkin(token, data) {
   return request({
     url: '/checkin/' + token,
     method: 'post',
-    password
+    data
   });
 }

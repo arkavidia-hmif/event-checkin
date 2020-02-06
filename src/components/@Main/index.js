@@ -49,12 +49,11 @@ class Main extends React.Component {
     const {getToken} = this.props;
 
     const pass = {password: getToken()};
-    checkin(result, pass).then((resPOST) =>{
+    checkin(result, pass).then(() =>{
       this.handleClose();
-      console.log({resPOST});
+      alert('Welcome' + this.state.attendee.name);
     }).catch(err => {
       alert((err.response && err.response.data && err.response.data.detail) || 'Error');
-      console.log({err})
     })
   }
 
@@ -66,7 +65,6 @@ class Main extends React.Component {
       this.setState({attendee: res.data})
     }).catch(err => {
       alert((err.response && err.response.data && err.response.data.detail) || 'Error');
-      console.log({err})
     })
   }
 
